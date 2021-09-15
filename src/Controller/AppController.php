@@ -13,6 +13,9 @@ class AppController extends AbstractController
      */
     public function home(): Response
     {
-        return $this->render("app/home.html.twig");
+        // retourne le rendu de la vue twig
+        return $this->render("app/home.html.twig", [
+            'name' => 'Eric', // envoi un paramètre à la vue
+        ]);
     }
 }

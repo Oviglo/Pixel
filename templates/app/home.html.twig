@@ -1,5 +1,6 @@
-{% extends "base.html.twig" %}
+{% extends "front_layout.html.twig" %}
 
-{% block body %}
-Hello World
+{% block content %}
+{# le filtre "upper" met en majuscule #}
+Hello {{ name|upper }} <i class="fas fa-smile"></i>
 {% endblock %}

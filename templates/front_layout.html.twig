@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<header id="main-header">
+    <div class="container">
+        <div id="main-title" class="my-2">
+            <div class="display-3 d-flex align-items-center">
+                <div class="bg-primary p-2 text-white me-3">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+
+                <div>
+                    Pixel
+                    <div class="fs-5">Pour les passionnés du jeu rétro</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+    {% block content %}{% endblock %}
+    </div>
+</main>
+{% endblock %}
