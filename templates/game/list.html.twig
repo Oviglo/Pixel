@@ -3,5 +3,21 @@
 {% block content %}
 <h1>Liste des jeux</h1>
 
-{{ dump(entities) }}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{{ path('app_game_new') }}" class="btn btn-success">Nouveau jeu</a>
+</div>
+
+{# {{ dump(entities) }} #}
+<ul class="list-group">
+    {% for entity in entities %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <h5>{{ entity.title }}</h5>
+                <div>
+                    <a href="{{ path('app_game_edit', {'id': entity.id}) }}" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Game;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,21 @@ class GameType extends AbstractType
     {
         // Ajout des champs dans le formulaire
         $builder
-            ->add('title')
-            ->add('content')
-            ->add('enabled')
+            ->add('title', null, [
+                'label' => 'Titre du jeu'
+            ])
+            ->add('content', null, [
+                'label' => 'Description du jeu',
+                'attr' => ['rows' => 6] // Modifie les attributs HTML du champ
+            ])
+            ->add('enabled', ChoiceType::class, [
+                'label' => 'Publié',
+                'choices' => [ // Choix proposés
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true, // type de selection
+            ])
         ;
     }
 

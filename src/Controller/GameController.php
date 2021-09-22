@@ -35,6 +35,9 @@ class GameController extends AbstractController
      */
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        // Autre manière d'optenir l'entityManager:
+        // $entityManager = $this->getDoctrine()->getManager();
+
         // EntityManagerInterface est un service, c'est un objet que Symfony a créé pour nous
         $entity = new Game();
         // Création d'un nouveau formulaire en utilisant la classe GameType
@@ -46,10 +49,35 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($entity); // Prepare la requête
             $entityManager->flush(); // Execute la requête
+
+            // Redirection 
+            return $this->redirectToRoute("app_game_list");
         }
         
         return $this->render("game/new.html.twig", [
             'form' => $form->createView(), // Envoi la vue du formulaire dans la vue twig
+        ]);
+    }
+
+    /**
+     * Requirements indique la valeur attendue, \d+ indique que id doit être un nombre de 1 ou plusieurs chiffres
+     * 
+     * @Route("/{id}/edit", requirements={"id":"\d+"})
+     */
+    public function edit(Game $entity, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(GameType::class, $entity);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush(); // L'entité est déjà enregistré dans l'ORM, il n'est pas utile de faire un persist
+
+            return $this->redirectToRoute('app_game_list');
+        }
+
+        return $this->render("game/edit.html.twig", [
+            'form' => $form->createView(),
         ]);
     }
 }
