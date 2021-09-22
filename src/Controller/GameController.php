@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Définie un prefix pour toutes les routes de ce controleur
@@ -33,7 +34,7 @@ class GameController extends AbstractController
     /**
      * @Route("/new")
      */
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator): Response
     {
         // Autre manière d'optenir l'entityManager:
         // $entityManager = $this->getDoctrine()->getManager();
@@ -49,6 +50,8 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($entity); // Prepare la requête
             $entityManager->flush(); // Execute la requête
+
+            $this->addFlash('success', $translator->trans('game.new.success', ['%game%' => $entity->getTitle()]));
 
             // Redirection 
             return $this->redirectToRoute("app_game_list");
@@ -73,11 +76,32 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush(); // L'entité est déjà enregistré dans l'ORM, il n'est pas utile de faire un persist
 
+            $this->addFlash('success', 'Le jeu a bien été modifié');
+
             return $this->redirectToRoute('app_game_list');
         }
 
         return $this->render("game/edit.html.twig", [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", requirements={"id":"\d+"})
+     */
+    public function delete(Game $entity, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid("delete".$entity->getId(), $request->get('token'))) {
+            $entityManager->remove($entity);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le jeu a bien été supprimé');
+
+            return $this->redirectToRoute('app_game_list');
+        }
+
+        return $this->render("game/delete.html.twig", [
+            'entity' => $entity,
         ]);
     }
 }
