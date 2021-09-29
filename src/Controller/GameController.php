@@ -83,6 +83,7 @@ class GameController extends AbstractController
 
         return $this->render("game/edit.html.twig", [
             'form' => $form->createView(),
+            'entity' => $entity,
         ]);
     }
 

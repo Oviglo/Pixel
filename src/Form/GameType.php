@@ -3,7 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Game;
+use App\Entity\Support;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +33,24 @@ class GameType extends AbstractType
                     'Non' => false,
                 ],
                 'expanded' => true, // type de selection
+            ])
+
+            ->add('support', EntityType::class, [
+                'class' => Support::class,
+                'required' => false,
+                'group_by' => 'constructor',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.year');
+                }
+            ])
+
+            // Ajout du formulaire ImageType 
+            ->add('image', ImageType::class)
+
+            ->add('deleteImage', CheckboxType::class, [
+                'label' => 'game.delete_image',
+                'required' => false,
             ])
         ;
     }

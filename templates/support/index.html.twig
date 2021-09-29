@@ -23,8 +23,8 @@
                 <td>{{ support.constructor }}</td>
                 <td>{{ support.year }}</td>
                 <td>
-                    <a href="{{ path('support_show', {'id': support.id}) }}">show</a>
-                    <a href="{{ path('support_edit', {'id': support.id}) }}">edit</a>
+                    <a href="{{ path('support_show', {'id': support.id}) }}" class="btn btn-light">show</a>
+                    <a href="{{ path('support_edit', {'id': support.id}) }}" class="btn btn-info">edit</a>
                 </td>
             </tr>
         {% else %}

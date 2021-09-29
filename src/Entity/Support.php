@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SupportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,24 @@ class Support
      * @ORM\Column(type="integer")
      */
     private $year;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="support")
+     */
+    private $games;
+
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+    }
+
+    /**
+     * Appelée lorsque que l'objet est convertis en chaine
+     */
+    public function __toString()
+    {
+        return strtoupper($this->name) . ' (' . $this->year . ')';
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +89,36 @@ class Support
     public function setYear(int $year): self
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Game[]
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): self
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+            $game->setSupport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): self
+    {
+        if ($this->games->removeElement($game)) {
+            // set the owning side to null (unless already changed)
+            if ($game->getSupport() === $this) {
+                $game->setSupport(null);
+            }
+        }
 
         return $this;
     }

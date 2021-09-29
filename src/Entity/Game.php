@@ -46,6 +46,25 @@ class Game
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Support::class, inversedBy="games")
+     * 
+     * Si le support est supprimé, cette propriété sera à null
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $support;
+
+    /**
+     * orphanRemoval indique que l'entité Image est supprimé s'il n'y a plus de connexion avec l'entité Game
+     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $image;
+
+    /**
+     * @var bool
+     */
+    private $deleteImage = false;
+
     public function __construct()
     {
         // Met automatiquement la date de création
@@ -154,6 +173,58 @@ class Game
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getSupport(): ?Support
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?Support $support): self
+    {
+        $this->support = $support;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deleteImage
+     *
+     * @return  bool
+     */ 
+    public function getDeleteImage()
+    {
+        return $this->deleteImage;
+    }
+
+    /**
+     * Set the value of deleteImage
+     *
+     * @param  bool  $deleteImage
+     *
+     * @return  self
+     */ 
+    public function setDeleteImage(bool $deleteImage)
+    {
+        $this->deleteImage = $deleteImage;
+
+        if ($deleteImage) {
+            $this->image = null;
+        }
 
         return $this;
     }
