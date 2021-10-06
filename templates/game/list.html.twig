@@ -4,19 +4,30 @@
 <h1>{{ 'game.list'|trans }}</h1>
 
 <div class="d-flex justify-content-end mb-3">
+    {% if app.user %}
     <a href="{{ path('app_game_new') }}" class="btn btn-success">{{ 'game.new.title'|trans }}</a>
+    {% endif %}
 </div>
 
 {# {{ dump(entities) }} #}
+<div>Il y a {{ count }} jeux</div>
 <ul class="list-group">
     {% for entity in entities %}
         <li class="list-group-item">
             <div class="d-flex justify-content-between align-items-center">
+                {% if entity.image is not empty %}
+                <img src="{{ asset(entity.image.webPath) }}" alt="{{ entity.title }}" style="max-width: 150px;">
+                {% endif %}
                 <h5>{{ entity.title }}</h5>
+                {% if entity.user is not empty %}
+                <div>{{ entity.user.username }}</div>
+                {% endif %}
                 <span class="badge bg-info">{{ entity.support }}</span>
                 <div>
+                    {% if is_granted('EDIT', entity) %}
                     <a href="{{ path('app_game_edit', {'id': entity.id}) }}" class="btn btn-light"><i class="fas fa-edit"></i></a>
                     <a href="{{ path('app_game_delete', {'id': entity.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                    {% endif %}
                 </div>
             </div>
         </li>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\User;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Définie un prefix pour toutes les routes de ce controleur
@@ -24,15 +26,23 @@ class GameController extends AbstractController
      */
     public function list(GameRepository $gameRepository): Response 
     {
-        $entities = $gameRepository->findAll(); // retourne tous les jeux
-
+        if ($this->getUser() instanceof User) {
+            $entities = $gameRepository->findAll(); // retourne tous les jeux
+            $count = $gameRepository->count([]);
+        } else {
+            $entities = $gameRepository->findEnabled();
+            $count = $gameRepository->count(['enabled' => true]);
+        }
+        
         return $this->render("game/list.html.twig", [
             'entities' => $entities,
+            'count' => $count,
         ]);
     }
 
     /**
      * @Route("/new")
+     * @IsGranted("ROLE_USER")
      */
     public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator): Response
     {
@@ -41,6 +51,7 @@ class GameController extends AbstractController
 
         // EntityManagerInterface est un service, c'est un objet que Symfony a créé pour nous
         $entity = new Game();
+        $entity->setUser($this->getUser());
         // Création d'un nouveau formulaire en utilisant la classe GameType
         $form = $this->createForm(GameType::class, $entity);
 
@@ -69,6 +80,12 @@ class GameController extends AbstractController
      */
     public function edit(Game $entity, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $entity);
+
+        if (null === $entity->getUser()) {
+            $entity->setUser($this->getUser());
+        }
+
         $form = $this->createForm(GameType::class, $entity);
 
         $form->handleRequest($request);
@@ -92,6 +109,8 @@ class GameController extends AbstractController
      */
     public function delete(Game $entity, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $entity);
+
         if ($this->isCsrfTokenValid("delete".$entity->getId(), $request->get('token'))) {
             $entityManager->remove($entity);
             $entityManager->flush();

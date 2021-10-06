@@ -65,6 +65,12 @@ class Game
      */
     private $deleteImage = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="games")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $user;
+
     public function __construct()
     {
         // Met automatiquement la date de création
@@ -225,6 +231,18 @@ class Game
         if ($deleteImage) {
             $this->image = null;
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
