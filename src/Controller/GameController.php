@@ -24,19 +24,28 @@ class GameController extends AbstractController
     /**
      * @Route("/")
      */
-    public function list(GameRepository $gameRepository): Response 
+    public function list(Request $request, GameRepository $gameRepository): Response 
     {
-        if ($this->getUser() instanceof User) {
+        // Recherche la variable 'p' dans les _POST et _GET
+        $page = $request->get('p', 1); // page 1 par défaut
+        $itemCount = 2;
+
+        $entities = $gameRepository->findPagination($page, $itemCount);
+
+        /*if ($this->getUser() instanceof User) {
             $entities = $gameRepository->findAll(); // retourne tous les jeux
             $count = $gameRepository->count([]);
         } else {
             $entities = $gameRepository->findEnabled();
             $count = $gameRepository->count(['enabled' => true]);
-        }
+        }*/
+
+        $pageCount = \ceil($entities->count() / $itemCount);
         
         return $this->render("game/list.html.twig", [
             'entities' => $entities,
-            'count' => $count,
+            'count' => $entities->count(),
+            'pageCount' => $pageCount,
         ]);
     }
 

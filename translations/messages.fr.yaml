@@ -1,4 +1,5 @@
 game:
+  menu: Jeux
   list: Liste des jeux
   title: Titre du jeu
   content: Description du jeu
@@ -14,3 +15,8 @@ game:
     title: Supprimer un jeu
     message: Voulez-vous vraiment supprimer le jeu <strong>"%game%"</strong> ?
     success: Le jeu a bien été supprimé
+  categories: Catégories
+
+security:
+  login: Se connecter
+  register: S'inscrire

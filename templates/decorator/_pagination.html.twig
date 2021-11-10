@@ -1,0 +1,9 @@
+<nav aria-label="page">
+  <ul class="pagination">
+    {% for p in 1..pageCount %} {# boucle de 1 à pageCount #}
+    <li class="page-item">
+      <a class="page-link" href="{{ path(route, {"p": p}) }}">{{ p }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>

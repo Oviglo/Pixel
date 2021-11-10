@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Game;
 use App\Entity\Support;
 use Doctrine\ORM\EntityRepository;
@@ -11,9 +12,26 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class GameType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+    /*
+    PHP 8
+
+    public function __construct(private Security $security)
+    {
+
+    }
+    */
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Ajout des champs dans le formulaire
@@ -26,16 +44,20 @@ class GameType extends AbstractType
                 'help' => 'game.content_help',
                 'attr' => ['rows' => 6] // Modifie les attributs HTML du champ
             ])
-            ->add('enabled', ChoiceType::class, [
+        ;
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('enabled', ChoiceType::class, [
                 'label' => 'game.enabled',
                 'choices' => [ // Choix proposés
                     'Oui' => true,
                     'Non' => false,
                 ],
                 'expanded' => true, // type de selection
-            ])
+            ]);
+        }
 
-            ->add('support', EntityType::class, [
+        $builder->add('support', EntityType::class, [
                 'class' => Support::class,
                 'required' => false,
                 'group_by' => 'constructor',
@@ -45,6 +67,13 @@ class GameType extends AbstractType
                 }
             ])
 
+            ->add('categories', EntityType::class, [
+                'label' => 'game.categories',
+                'multiple' => true,
+                'expanded' => true,
+                'class' => Category::class,
+            ])
+
             // Ajout du formulaire ImageType 
             ->add('image', ImageType::class)
 
@@ -52,6 +81,8 @@ class GameType extends AbstractType
                 'label' => 'game.delete_image',
                 'required' => false,
             ])
+
+
         ;
     }
 
