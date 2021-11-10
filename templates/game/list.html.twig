@@ -33,4 +33,8 @@
         </li>
     {% endfor %}
 </ul>
+
+<div class="my-3">
+    {% include "decorator/_pagination.html.twig" with {"route": "app_game_list"} %}
+</div>
 {% endblock %}

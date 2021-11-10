@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\User;
+use App\Event\GameEvent;
+use App\Event\GameEvents;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Définie un prefix pour toutes les routes de ce controleur
@@ -28,10 +31,10 @@ class GameController extends AbstractController
     {
         // Recherche la variable 'p' dans les _POST et _GET
         $page = $request->get('p', 1); // page 1 par défaut
-        $itemCount = 2;
+        $itemCount = 20;
 
         $entities = $gameRepository->findPagination($page, $itemCount);
-
+ 
         /*if ($this->getUser() instanceof User) {
             $entities = $gameRepository->findAll(); // retourne tous les jeux
             $count = $gameRepository->count([]);
@@ -53,7 +56,7 @@ class GameController extends AbstractController
      * @Route("/new")
      * @IsGranted("ROLE_USER")
      */
-    public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher): Response
     {
         // Autre manière d'optenir l'entityManager:
         // $entityManager = $this->getDoctrine()->getManager();
@@ -70,6 +73,9 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($entity); // Prepare la requête
             $entityManager->flush(); // Execute la requête
+
+            // Déclanchement d'un événement
+            $eventDispatcher->dispatch(new GameEvent($entity), GameEvents::GAME_ADDED);
 
             $this->addFlash('success', $translator->trans('game.new.success', ['%game%' => $entity->getTitle()]));
 

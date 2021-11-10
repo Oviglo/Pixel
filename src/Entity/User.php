@@ -50,9 +50,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $games;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="user")
+     */
+    private $logins;
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->logins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,6 +186,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($game->getUser() === $this) {
                 $game->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Login[]
+     */
+    public function getLogins(): Collection
+    {
+        return $this->logins;
+    }
+
+    public function addLogin(Login $login): self
+    {
+        if (!$this->logins->contains($login)) {
+            $this->logins[] = $login;
+            $login->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLogin(Login $login): self
+    {
+        if ($this->logins->removeElement($login)) {
+            // set the owning side to null (unless already changed)
+            if ($login->getUser() === $this) {
+                $login->setUser(null);
             }
         }
 
