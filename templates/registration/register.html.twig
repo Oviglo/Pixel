@@ -14,6 +14,16 @@
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
+        <div class="row align-items-end">
+            <div class="col-md-6">
+            {{ form_row(registrationForm.address) }}
+            </div>
+
+            <div class="col-md-6">
+                <select id="address_results" class="form-control ms-2 mb-3" data-url="{{ path('app_app_searchaddress') }}"></select>
+            </div>
+            
+        </div>
         {{ form_row(registrationForm.agreeTerms) }}
 
         <button type="submit" class="btn">Register</button>

@@ -6,6 +6,7 @@ use App\Repository\SupportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=SupportRepository::class)
@@ -36,6 +37,7 @@ class Support
 
     /**
      * @ORM\OneToMany(targetEntity=Game::class, mappedBy="support")
+     * @Ignore()
      */
     private $games;
 

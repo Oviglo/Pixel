@@ -18,7 +18,7 @@
 
 {% block root %}
 {% set options = options|merge({'currentDepth': 0}) %}
-{% if options.style is defined and options.currentClass is defined and options.currentClass == 'current' %}
+{% if options.style is defined and options.currentClass is defined and options.currentClass == 'active' %}
     {% set options = options|merge({'currentClass': 'active'}) %}
     {% set options = options|merge({'ancestorClass': 'active'}) %}
 {% endif %}

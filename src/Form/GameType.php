@@ -39,7 +39,7 @@ class GameType extends AbstractType
             ->add('title', null, [
                 'label' => 'game.title'
             ])
-            ->add('content', null, [
+            ->add('content', WysiwygType::class, [
                 'label' => 'game.content',
                 'help' => 'game.content_help',
                 'attr' => ['rows' => 6] // Modifie les attributs HTML du champ

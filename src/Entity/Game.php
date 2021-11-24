@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity
@@ -70,6 +71,7 @@ class Game
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="games")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Ignore()
      */
     private $user;
 
@@ -78,11 +80,17 @@ class Game
      */
     private $categories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="game", orphanRemoval=true)
+     */
+    private $likes;
+
     public function __construct()
     {
         // Met automatiquement la date de création
         $this->createdAt = new \DateTime;
         $this->categories = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     /**
@@ -275,6 +283,36 @@ class Game
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getGame() === $this) {
+                $like->setGame(null);
+            }
+        }
 
         return $this;
     }

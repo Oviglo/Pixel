@@ -6,6 +6,10 @@ $primary: #883f8f;
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
 @import "node_modules/@fortawesome/fontawesome-free/scss/brands";
 
+@import "node_modules/tinymce/skins/ui/oxide/skin";
+@import "node_modules/tinymce/skins/content/default/content";
+@import "node_modules/tinymce/skins/ui/oxide/content";
+
 .menu-register > .nav-link {
     font-weight: bold;
     background-color: $primary;

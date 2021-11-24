@@ -10,6 +10,7 @@
         "sass": "^1.43.4",
         "sass-loader": "^12.3.0",
         "stimulus": "^2.0.0",
+        "tinymce": "^5.10.2",
         "webpack-notifier": "^1.14.1"
     },
     "license": "UNLICENSED",
