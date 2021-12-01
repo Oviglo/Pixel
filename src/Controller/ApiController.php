@@ -31,4 +31,14 @@ class ApiController extends AbstractController
             ['content-type' => 'text/'.$_format]
         );
     }
+
+    /**
+     * @Route("/best.{_format}", defaults={"_format": "json"})
+     */
+    public function best(string $_format, GameRepository $gameRepository, SerializerInterface $serializer): Response 
+    {
+        $result = $gameRepository->findBest();
+
+        return new Response($serializer->serialize($result, $_format));
+    }
 }

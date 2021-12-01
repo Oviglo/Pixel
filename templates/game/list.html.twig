@@ -1,12 +1,12 @@
 {% extends "front_layout.html.twig" %}
 
 {% block content %}
-<h1>{{ 'game.list'|trans }}</h1>
+<h1>{{ 'game.list'|trans|parse_icons }}</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <form action="" method="get" class="d-flex">
         <input type="text" name="s" placeholder="{{ 'game.search'|trans }}" class="form-control" value="{{ app.request.get('s','') }}">
-        <button type="submit" class="btn btn-light ms-1"><i class="fas fa-search"></i></button>
+        <button type="submit" class="btn btn-light ms-1">{{ '.icon-search'|parse_icons }}</button>
     </form>
     {% if app.user %}
     <a href="{{ path('app_game_new') }}" class="btn btn-success">{{ 'game.new.title'|trans }}</a>
@@ -23,6 +23,7 @@
                 <img src="{{ asset(entity.image.webPath) }}" alt="{{ entity.title }}" style="max-width: 150px;">
                 {% endif %}
                 <h5>{{ entity.title }}</h5>
+                <span>#{{ entity.id|str_pad(10, '0', 0) }}</span>
                 {% if entity.user is not empty %}
                 <div>{{ entity.user.username }}</div>
                 {% endif %}

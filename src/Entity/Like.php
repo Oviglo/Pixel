@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=LikeRepository::class)
@@ -25,12 +26,14 @@ class Like
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="likes")
+     * @Ignore()
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="likes")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $game;
 

@@ -84,4 +84,21 @@ class GameRepository extends ServiceEntityRepository
             ->leftJoin('g.categories', 'c')
         ;
     }
+
+    public function findBest()
+    {
+        $qb = $this->createQueryBuilder('g')
+            ->addSelect('COUNT(l) AS like_count')
+            ->leftJoin('g.likes', 'l')
+            ->groupBy('g.id')
+            ->setMaxResults(1)
+            ->orderBy('like_count', 'DESC')
+        ;
+
+        /*
+        [0 => $game, 1 => like_count]
+        */
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

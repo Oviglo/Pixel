@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -25,6 +26,7 @@ class Game
      * @var string
      * 
      * @ORM\Column(type="string", length=80)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -51,6 +53,7 @@ class Game
 
     /**
      * @ORM\ManyToOne(targetEntity=Support::class, inversedBy="games")
+     * @Ignore()
      * 
      * Si le support est supprimé, cette propriété sera à null
      * @ORM\JoinColumn(onDelete="SET NULL")

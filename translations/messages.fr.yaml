@@ -1,6 +1,6 @@
 game:
   menu: Jeux
-  list: Liste des jeux
+  list: .icon-list Liste des jeux
   title: Titre du jeu
   content: Description du jeu
   content_help: Description en quelques lignes
