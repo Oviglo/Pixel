@@ -1,7 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GameController!{% endblock %}
+{% block title %}Liste des jeux - {{ parent() }}{% endblock %}
 
 {% block body %}
+{# div.card>table.table>thead>tr>th*3 #}
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
+        <tbody>
+            {% for entity in entities %}
+            <tr>
+                <td>{{ entity.name }}</td>
+                <td>{% if entity.releaseDate is not empty %}
+                    {{ entity.releaseDate|date('d/m/Y') }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
