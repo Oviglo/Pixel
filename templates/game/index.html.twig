@@ -1,32 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des jeux{% endblock %}
+{% block title %}Hello GameController!{% endblock %}
 
 {% block body %}
-<div class="card">
-    <div class="card-body">
-        Ajout 
-    </div>
 
-    {# table.table>thead>tr>th*3 #}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.name }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
 {% endblock %}
