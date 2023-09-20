@@ -4,7 +4,11 @@
 
 {% block body %}
 <div class="card">
-    {# table.table>(thead>tr>th*3)+tbody #}
+    <div class="card-body">
+        <a class="btn btn-success" href="{{ path('app_game_new') }}">Ajouter un jeu</a>
+    </div>
+
+    {# table.table>thead>tr>th*3 #}
     <table class="table">
         <thead>
             <tr>

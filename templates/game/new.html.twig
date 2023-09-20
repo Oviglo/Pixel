@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div>
+
+{{ form_start(gameForm) }} {# Ajoute la balise form #}
+
+{{ form_widget(gameForm) }} {# Affiche les champs du formulaire #}
+
+<button type="submit" class="btn btn-primary">Envoyer</button>
+
+{{ form_end(gameForm) }} {# Ferme la balise form #}
+
+</div>
+{% endblock %}
