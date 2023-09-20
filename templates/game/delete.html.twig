@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{# div.card>div.card-body+div.card-footer #}
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Voulez-vous vraiment supprimer le jeu {{ entity.name }}
+        </div>
+    </div>
+    <div class="card-footer">
+        <form action="" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_game') }}">
+            <button type="submit" class="btn btn-danger">Oui</button>
+            <a href="{{ path('app_game_index') }}" class="btn btn-secondary ms-2">Non</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

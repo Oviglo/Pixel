@@ -29,7 +29,10 @@
                     -
                     {% endif %}
                 </td>
-                <td></td>
+                <td>
+                    <a class="btn btn-light" href="{{ path('app_game_edit', {'id': entity.id}) }}">Modifier</a>
+                    <a class="btn btn-danger me-1" href="{{ path('app_game_delete', {'id': entity.id}) }}">Supprimer</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
