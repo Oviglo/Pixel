@@ -54,8 +54,36 @@ class GameController extends AbstractController
     // {id} est un paramètre qui est un nombre de 1 ou plusieurs chiffres
     // Grâce au Param Converter, Symfony va faire automatiquement une requête pour récupérer le jeu en fonction de l'id
     #[Route('/game/{id<\d+>}/edit')]
-    public function edit(Game $entity): Response
+    public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
+        $form = $this->createForm(GameType::class, $entity);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('app_game_index');
+        }
+
+        return $this->render('game/edit.html.twig', [
+            'gameForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/game/{id<\d+>}/delete')]
+    public function delete(Game $entity, Request $request, EntityManagerInterface $em): Response
+    {
+        if ($request->getMethod() === Request::METHOD_POST) {
+            if ($this->isCsrfTokenValid('delete_game', $request->get('_token'))) {
+                $em->remove($entity);
+                $em->flush();
+
+                return $this->redirectToRoute('app_game_index');
+            }
+        }
+
+        return $this->render('game/delete.html.twig', [
+            'entity' => $entity,
+        ]);
     }
 }

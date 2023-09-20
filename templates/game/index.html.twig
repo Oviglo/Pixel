@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des jeux{% endblock %}
+{% block title %}Liste des jeux - {{ parent() }}{% endblock %}
 
 {% block body %}
 <div class="card">
@@ -17,15 +17,23 @@
                 <th>Actions</th>
             </tr>
         </thead>
-
         <tbody>
-        {% for entity in entities %}
+            {% for entity in entities %}
             <tr>
                 <td>{{ entity.name }}</td>
-                <td></td>
-                <td></td>
+                <td>
+                {% if entity.releaseDate is not empty %}
+                {{ entity.releaseDate|date('d/m/Y') }}
+                {% else %}
+                -
+                {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_game_edit', {'id': entity.id}) }}" class="btn btn-light">Modifier</a>
+                    <a href="{{ path('app_game_delete', {'id': entity.id}) }}" class="btn btn-danger me-1">Supprimer</a>
+                </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
