@@ -15,6 +15,7 @@
             <tr>
                 <th>Nom</th>
                 <th>Date</th>
+                <th>Catégorie</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                     -
                     {% endif %}
                 </td>
+                <td>{{ entity.category }}</td>
                 <td>
                     <a class="btn btn-light" href="{{ path('app_game_edit', {'id': entity.id}) }}">Modifier</a>
                     <a class="btn btn-danger me-1" href="{{ path('app_game_delete', {'id': entity.id}) }}">Supprimer</a>
