@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\SupportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category
+#[ORM\Entity(repositoryClass: SupportRepository::class)]
+class Support
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,10 +22,16 @@ class Category
     #[ORM\Column]
     private ?bool $published = null;
 
+    #[ORM\Column(length: 80)]
+    private ?string $constructor = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $releaseDate = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Game::class)]
+    #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'supports')]
     private Collection $games;
 
     public function __construct()
@@ -67,6 +73,30 @@ class Category
         return $this;
     }
 
+    public function getConstructor(): ?string
+    {
+        return $this->constructor;
+    }
+
+    public function setConstructor(string $constructor): static
+    {
+        $this->constructor = $constructor;
+
+        return $this;
+    }
+
+    public function getReleaseDate(): ?\DateTimeInterface
+    {
+        return $this->releaseDate;
+    }
+
+    public function setReleaseDate(?\DateTimeInterface $releaseDate): static
+    {
+        $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -91,7 +121,7 @@ class Category
     {
         if (!$this->games->contains($game)) {
             $this->games->add($game);
-            $game->setCategory($this);
+            $game->addSupport($this);
         }
 
         return $this;
@@ -100,10 +130,7 @@ class Category
     public function removeGame(Game $game): static
     {
         if ($this->games->removeElement($game)) {
-            // set the owning side to null (unless already changed)
-            if ($game->getCategory() === $this) {
-                $game->setCategory(null);
-            }
+            $game->removeSupport($this);
         }
 
         return $this;

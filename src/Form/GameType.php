@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Game;
+use App\Entity\Support;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +26,17 @@ class GameType extends AbstractType
             ])
             ->add('releaseDate', options: [
                 'years' => range(1972, date('Y') + 2), // de 1972 à la date courante + 2 ans
+            ])
+
+            ->add('category', EntityType::class, options: [
+                'class' => Category::class,
+                'expanded' => true,
+            ])
+
+            ->add('supports', EntityType::class, [
+                'class' => Support::class,
+                'multiple' => true,
+                'expanded' => true,
             ])
         ;
     }
