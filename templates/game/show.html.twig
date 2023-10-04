@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{{ entity.name }}</h1>
+<div>{{ entity.category }}</div>
+
+<div class="border-info border-2 p-2">
+{{ entity.description }}
+</div>
+{% endblock %}

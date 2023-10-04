@@ -16,6 +16,7 @@
                 <th>Nom</th>
                 <th>Date</th>
                 <th>Catégorie</th>
+                <th>Consoles</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,7 +24,11 @@
         <tbody>
             {% for entity in entities %}
             <tr>
-                <td>{{ entity.name }}</td>
+                <td>
+                    <a href="{{ path('app_game_show', {'id': entity.id}) }}">
+                        {{ entity.name }}
+                    </a>
+                </td>
                 <td>{% if entity.releaseDate is not empty %}
                     {{ entity.releaseDate|date('d/m/Y') }}
                     {% else %}
@@ -31,6 +36,11 @@
                     {% endif %}
                 </td>
                 <td>{{ entity.category }}</td>
+                <td>
+                    {% for support in entity.supports %}
+                    <span class="badge bg-info me-1">{{ support }}</span>
+                    {% endfor %}
+                </td>
                 <td>
                     <a class="btn btn-light" href="{{ path('app_game_edit', {'id': entity.id}) }}">Modifier</a>
                     <a class="btn btn-danger me-1" href="{{ path('app_game_delete', {'id': entity.id}) }}">Supprimer</a>
