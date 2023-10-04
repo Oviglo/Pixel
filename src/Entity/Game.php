@@ -26,6 +26,7 @@ class Game
     private \DateTime|null $releaseDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')] // Mettre la valeur à null si la catégorie est supprimée
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Support::class, inversedBy: 'games')]
