@@ -47,6 +47,8 @@ class GameType extends AbstractType
                     ;
                 }
             ])
+
+            ->add('published')
         ;
     }
 

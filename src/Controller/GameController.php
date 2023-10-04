@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
+use App\Security\Voter\GameVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +25,17 @@ class GameController extends AbstractController
         ]);
     }
 
+    #[Route('/game/{id<\d+>}')]
+    public function show(Game $entity): Response
+    {
+        $this->denyAccessUnlessGranted(GameVoter::VIEW, $entity);
+        
+        return $this->render('game/show.html.twig', ['entity' => $entity]);
+    }
+
     // Injection de dépendance: SF va m'envoyer les objets dont j'ai besoin en paramètre
     #[Route('/game/new')]
+    #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $entity = new Game();
@@ -54,6 +65,7 @@ class GameController extends AbstractController
     // {id} est un paramètre qui est un nombre de 1 ou plusieurs chiffres
     // Grâce au Param Converter, Symfony va faire automatiquement une requête pour récupérer le jeu en fonction de l'id
     #[Route('/game/{id<\d+>}/edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(GameType::class, $entity);
@@ -71,6 +83,7 @@ class GameController extends AbstractController
     }
 
     #[Route('/game/{id<\d+>}/delete')]
+    #[IsGranted('ROLE_USER')]
     public function delete(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
         if ($request->getMethod() === Request::METHOD_POST) {

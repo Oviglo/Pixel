@@ -16,13 +16,17 @@
                 <th>Date</th>
                 <th>Catégorie</th>
                 <th>Supports</th>
-                <th>Actions</th>
+                {% if is_granted('ROLE_USER') %}<th>Actions</th>{% endif %}
             </tr>
         </thead>
         <tbody>
             {% for entity in entities %}
             <tr>
-                <td>{{ entity.name }}</td>
+                <td>
+                    <a href="{{ path('app_game_show', {'id': entity.id}) }}">
+                        {{ entity.name }}
+                    </a>
+                </td>
                 <td>
                 {% if entity.releaseDate is not empty %}
                 {{ entity.releaseDate|date('d/m/Y') }}
@@ -36,10 +40,12 @@
                         <span class="badge bg-info mx-1">{{ support }}</span>
                     {% endfor %}
                 </td>
+                {% if is_granted('ROLE_USER') %}
                 <td>
                     <a href="{{ path('app_game_edit', {'id': entity.id}) }}" class="btn btn-light">Modifier</a>
                     <a href="{{ path('app_game_delete', {'id': entity.id}) }}" class="btn btn-danger me-1">Supprimer</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
