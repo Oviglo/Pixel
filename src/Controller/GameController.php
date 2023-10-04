@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +24,17 @@ class GameController extends AbstractController
         ]);
     }
 
+    #[Route('/game/{id<\d+>}')]
+    public function show(Game $entity): Response
+    {
+        return $this->render('game/show.html.twig', [
+            'entity' => $entity,
+        ]);
+    }
+
     // Injection de dépendance: SF va m'envoyer les objets dont j'ai besoin en paramètre
     #[Route('/game/new')]
+    #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $entity = new Game();

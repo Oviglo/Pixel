@@ -21,7 +21,7 @@
         <tbody>
             {% for entity in entities %}
             <tr>
-                <td>{{ entity.name }}</td>
+                <td><a href="{{ path('app_game_show', {'id': entity.id }) }}">{{ entity.name }}</a></td>
                 <td>
                 {% if entity.releaseDate is not empty %}
                 {{ entity.releaseDate|date('d/m/Y') }}
