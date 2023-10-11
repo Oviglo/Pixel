@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             {% for entity in entities %}
-            <tr>
+            <tr class="{% if not entity.published %}table-danger{% endif %}">
                 <td><a href="{{ path('app_game_show', {'id': entity.id }) }}">{{ entity.name }}</a></td>
                 <td>
                 {% if entity.releaseDate is not empty %}

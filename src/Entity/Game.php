@@ -32,6 +32,12 @@ class Game
     #[ORM\ManyToMany(targetEntity: Support::class, inversedBy: 'games')]
     private Collection $supports;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $published = null;
+
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->supports = new ArrayCollection();
@@ -110,6 +116,30 @@ class Game
     public function removeSupport(Support $support): static
     {
         $this->supports->removeElement($support);
+
+        return $this;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->published ?? false; // null !== $this->published ? $this->published : false
+    }
+
+    public function setPublished(?bool $published): static
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }
