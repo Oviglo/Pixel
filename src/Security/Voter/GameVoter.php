@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,8 +24,16 @@ class GameVoter extends Voter
     {
         $user = $token->getUser();
 
+        if ($user instanceof User && $user->hasRole('ROLE_ADMIN')) {
+            return true;
+        }
+
         if ($attribute === self::VIEW) {
-            return $subject->isPublished(); // On peut voir la fiche du jeu
+            return $subject->isPublished() || $subject->getAuthor() === $user; // On peut voir la fiche du jeu
+        }
+
+        if ($attribute === self::EDIT) {
+            return $subject->getAuthor() === $user;
         }
 
         return false;

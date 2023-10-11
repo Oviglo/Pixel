@@ -9,7 +9,7 @@
     </div>
 
     {# table.table>thead>tr>th*3 #}
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             {% for entity in entities %}
-            <tr>
+            <tr class="{% if not entity.published %}table-danger{% endif %}">
                 <td>
                     <a href="{{ path('app_game_show', {'id': entity.id}) }}">
                         {{ entity.name }}

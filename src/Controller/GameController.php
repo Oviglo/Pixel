@@ -38,7 +38,9 @@ class GameController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $user = $this->getUser(); // Entity User de l'utilisateur connecté
         $entity = new Game();
+        $entity->setAuthor($user);
         // $entity->setName('Megaman');
         // $entity->setDescription('');
 
@@ -68,6 +70,8 @@ class GameController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted(GameVoter::EDIT, $entity);
+        
         $form = $this->createForm(GameType::class, $entity);
         $form->handleRequest($request);
 
