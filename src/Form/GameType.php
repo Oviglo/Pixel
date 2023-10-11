@@ -11,9 +11,14 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class GameType extends AbstractType
 {
+    public function __construct(private Security $security) {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder 
@@ -44,9 +49,11 @@ class GameType extends AbstractType
                     ;
                 }
             ])
-
-            ->add('published')
         ;
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('published');
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

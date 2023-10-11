@@ -36,6 +36,10 @@ class Game
     #[ORM\Column(nullable: true)]
     private ?bool $published = null;
 
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->supports = new ArrayCollection();
@@ -118,14 +122,26 @@ class Game
         return $this;
     }
 
-    public function isPublished(): ?bool
+    public function isPublished(): bool
     {
-        return $this->published;
+        return $this->published ?? false; // null !== $this->published ? $this->published : false
     }
 
     public function setPublished(?bool $published): static
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

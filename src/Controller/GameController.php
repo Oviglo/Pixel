@@ -41,7 +41,9 @@ class GameController extends AbstractController
     #[IsGranted('ROLE_USER')] // Il faut être connecté pour avoir l'accès à cette page 
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $user = $this->getUser();
         $entity = new Game();
+        $entity->setAuthor($user);
         // $entity->setName('The Legend Of Zelda');
         // $entity->setDescription('');
 
@@ -70,6 +72,8 @@ class GameController extends AbstractController
     #[Route('/game/{id<\d+>}/edit')]
     public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted(attribute: GameVoter::EDIT, subject: $entity);
+
         $form = $this->createForm(GameType::class, $entity);
         $form->handleRequest($request);
 
@@ -87,6 +91,8 @@ class GameController extends AbstractController
     #[Route('/game/{id<\d+>}/delete')]
     public function delete(Game $entity, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted(attribute: GameVoter::EDIT, subject: $entity);
+        
         // Test si le bouton "submit" a été cliqué
         if ($request->getMethod() === Request::METHOD_POST) {
 

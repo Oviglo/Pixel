@@ -17,13 +17,14 @@
                 <th>Date</th>
                 <th>Catégorie</th>
                 <th>Consoles</th>
+                <th>Auteur</th>
                 <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
             {% for entity in entities %}
-            <tr>
+            <tr class="{% if not entity.published %}table-danger{% endif %}">
                 <td>
                     <a href="{{ path('app_game_show', {'id': entity.id}) }}">
                         {{ entity.name }}
@@ -40,6 +41,9 @@
                     {% for support in entity.supports %}
                     <span class="badge bg-info me-1">{{ support }}</span>
                     {% endfor %}
+                </td>
+                <td>
+                    {{ entity.author }}
                 </td>
                 <td>
                     <a class="btn btn-light" href="{{ path('app_game_edit', {'id': entity.id}) }}">Modifier</a>
