@@ -5,8 +5,29 @@
 {% block body %}
 {# div.card>table.table>thead>tr>th*3 #}
 <div class="card">
-    <div class="card-body">
+    <div class="card-header">
         <a class="btn btn-success" href="{{ path('app_game_new') }}">Ajouter un jeu</a>
+    </div>
+
+    <div class="card-body">
+        <form action="" method="get" class="d-flex">
+            <select name="published" class="form-control mx-1">
+                <option value="ALL">Tous</option>
+                <option value="1" {% if app.request.get('published') == '1' %}selected{% endif %}>Publiés</option>
+                <option value="0" {% if app.request.get('published') == '0' %}selected{% endif %}>Non publiés</option>
+            </select>
+
+            <input type="search" name="search" class="form-control mx-1" placeholder="Rechercher..." value="{{ app.request.get('search') }}">
+
+            <select name="category" class="form-control mx-1">
+                <option value="ALL">Toutes les catégories</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if app.request.get('category') == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </form>
     </div>
 
     {# table.table>thead>tr>th*3 #}
@@ -53,5 +74,9 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="card-footer">
+        {% include 'decorator/_pagination.html.twig' with {'route': 'app_game_index'} %}
+    </div>
 </div>
 {% endblock %}
