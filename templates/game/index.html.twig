@@ -4,8 +4,33 @@
 
 {% block body %}
 <div class="card">
-    <div class="card-body">
+    <div class="card-header">
         <a class="btn btn-success" href="{{ path('app_game_new') }}">Ajouter un jeu</a>
+    </div>
+
+    <div class="card-body">
+        <form action="" method="get" class="d-flex">
+            <select name="published" class="form-control mx-1">
+                <option value="ALL">Tous</option>
+                <option value="1" {% if app.request.get('published') == '1' %}selected{% endif %}>Publiés</option>
+                <option value="0" {% if app.request.get('published') == '0' %}selected{% endif %}>Non publiés</option>
+            </select>
+
+            <input type="search" name="search" class="form-control mx-1" placeholder="Rechercher..." value="{{ app.request.get('search') }}">
+
+            <select name="category" class="form-control mx-1">
+                <option value="ALL">Toutes les catégories</option>
+                {% for category in categories %}
+                <option 
+                    value="{{ category.id }}" 
+                    {% if app.request.get('category') == category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary mx-1">Filtrer</button>
+        </form>
     </div>
 
     {# table.table>thead>tr>th*3 #}
@@ -15,6 +40,8 @@
                 <th>Nom</th>
                 <th>Date</th>
                 <th>Catégorie</th>
+                <th>Consoles</th>
+                <th>Créé par</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,6 +58,16 @@
                 </td>
                 <td>
                     {{ entity.category }}
+                </td>
+                <td>
+                {% for support in entity.supports %}
+                    <span class="badge bg-info">{{ support }}</span>
+                {% endfor %}
+                </td>
+                <td>
+                    {% if entity.author is not empty %}
+                    {{ entity.author.username }}
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{{ path('app_game_edit', {'id': entity.id}) }}" class="btn btn-light">Modifier</a>
