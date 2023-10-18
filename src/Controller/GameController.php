@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Form\GameType;
+use App\Repository\CategoryRepository;
 use App\Repository\GameRepository;
 use App\Security\Voter\GameVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,12 +17,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameController extends AbstractController
 {
     #[Route('/game')]
-    public function index(GameRepository $repository): Response
+    public function index(
+        GameRepository $repository, 
+        Request $request, 
+        CategoryRepository $categoryRepository
+    ): Response
     {
-        $entities = $repository->findAll(); // SELECT * FROM game
+        $p = $request->get('p', 1);
+        $itemCount = 2;
+
+        $entities = $repository->findFiltered(
+            $request->get('published', 'ALL'),
+            $request->get('search', ''),
+            $request->get('category', 'ALL'),
+            $itemCount,
+            $p
+        );
+
+        // Seulement les catégories publiées
+        $categories = $categoryRepository->findBy(['published' => true]);
+
+        $pageCount = ceil($entities->count() / $itemCount);
 
         return $this->render('game/index.html.twig', [
             'entities' => $entities, // Envois de tous les jeux dans le vue
+            'categories' => $categories,
+            'pageCount' => $pageCount,
         ]);
     }
 
