@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body {
+        background-color: #efefef;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        Une nouvelle fiche de jeu vient d'être ajoutée. 
+    </div>
+    <div class="game">{{ entity.name }}</div>
+
+    <a href="{{ url('app_game_show', {'id': entity.id }) }}" class="btn">Voir la fiche</a>
+</body>
+</html>
