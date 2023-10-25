@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 // Indique à Doctrine que cette classe correspond à une table
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks] // Indique que cette entité possède des fonctions à appeler lors d'événement Doctrine
 class Game
 {
     #[ORM\Id] // Clé primaire
@@ -39,9 +40,18 @@ class Game
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?User $author = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
     public function __construct()
     {
         $this->supports = new ArrayCollection();
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void 
+    {
+        $this->updatedAt = new \DateTime;
     }
 
     public function getId(): int|null
@@ -141,6 +151,18 @@ class Game
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

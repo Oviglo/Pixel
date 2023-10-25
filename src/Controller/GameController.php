@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Event\GameEvent;
+use App\Event\GameEvents;
 use App\Form\GameType;
 use App\Repository\CategoryRepository;
 use App\Repository\GameRepository;
@@ -10,6 +12,7 @@ use App\Security\Voter\GameVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,7 +60,11 @@ class GameController extends AbstractController
     // Injection de dépendance: SF va m'envoyer les objets dont j'ai besoin en paramètre
     #[Route('/game/new')]
     #[IsGranted('ROLE_USER')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(
+        EntityManagerInterface $entityManager, 
+        Request $request,
+        EventDispatcherInterface $eventDispatcher
+    ): Response
     {
         $user = $this->getUser(); // Entity User de l'utilisateur connecté
         $entity = new Game();
@@ -76,6 +83,11 @@ class GameController extends AbstractController
             $entityManager->persist($entity);
 
             $entityManager->flush(); // Exécute la requête
+
+            $eventDispatcher->dispatch(
+                new GameEvent($entity), // Objet Event envoyé
+                GameEvents::GAME_ADDED // Nom de l'événement
+            );
 
             return $this->redirectToRoute('app_game_index'); // redirection vers la liste des jeux
         }
