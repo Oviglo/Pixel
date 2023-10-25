@@ -24,7 +24,7 @@ class GameController extends AbstractController
     ): Response
     {
         $p = $request->get('p', 1);
-        $itemCount = 2;
+        $itemCount = 3;
 
         $entities = $repository->findFiltered(
             $request->get('published', 'ALL'),
