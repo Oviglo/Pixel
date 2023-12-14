@@ -46,8 +46,12 @@ class Game
     // cascade permet de persister l'image en lorsque le jeu est persisté également
     // lorsque Doctrine fera un INSERT du jeu, il fera aussi un INSERT de l'image
     // Même chose pour le remove
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    //
+    // orphanRemoval indique qu'il faut supprimer automatiquement l'image de la db si $mainImage est à null
+    #[ORM\OneToOne(cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?Image $mainImage = null;
+
+    private bool $deleteMainImage = false;
 
     public function __construct()
     {
@@ -181,6 +185,22 @@ class Game
     public function setMainImage(?Image $mainImage): static
     {
         $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    public function getDeleteMainImage(): bool
+    {
+        return $this->deleteMainImage;
+    }
+
+    public function setDeleteMainImage(bool $deleteMainImage): self
+    {
+        $this->deleteMainImage = $deleteMainImage;
+
+        if ($this->deleteMainImage) {
+            $this->mainImage = null; // Supprime l'objet image
+        }
 
         return $this;
     }

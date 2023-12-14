@@ -45,6 +45,9 @@
             {% for entity in entities %}
             <tr class="{% if not entity.published %}table-danger{% endif %}">
                 <td>
+                    {% if entity.mainImage is not empty %}
+                    <img src="{{ entity.mainImage }}" width="120"/>
+                    {% endif %}
                     <a href="{{ path('app_game_show', {'id': entity.id}) }}">
                         {{ entity.name }}
                     </a>
