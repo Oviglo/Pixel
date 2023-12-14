@@ -34,6 +34,9 @@ class Support
     #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'supports')]
     private Collection $games;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Image $mainImage = null;
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -132,6 +135,18 @@ class Support
         if ($this->games->removeElement($game)) {
             $game->removeSupport($this);
         }
+
+        return $this;
+    }
+
+    public function getMainImage(): ?Image
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?Image $mainImage): static
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }
