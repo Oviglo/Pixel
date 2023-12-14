@@ -48,7 +48,10 @@
         <tbody>
             {% for entity in entities %}
             <tr class="{% if not entity.published %}table-danger{% endif %}">
-                <td><a href="{{ path('app_game_show', {'id': entity.id }) }}">{{ entity.name }}</a></td>
+                <td>
+                    <img src="{{ entity.mainImage }}" width="120" />
+                    <a href="{{ path('app_game_show', {'id': entity.id }) }}">{{ entity.name }}</a>
+                </td>
                 <td>
                 {% if entity.releaseDate is not empty %}
                 {{ entity.releaseDate|date('d/m/Y') }}
