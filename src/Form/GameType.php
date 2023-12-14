@@ -52,6 +52,9 @@ class GameType extends AbstractType
                     ;
                 }
             ])
+
+            // Formulaire imbriqué
+            ->add('mainImage', ImageType::class)
         ;
 
         if ($this->security->isGranted('ROLE_ADMIN')) {

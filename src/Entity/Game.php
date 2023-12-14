@@ -43,6 +43,12 @@ class Game
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    // cascade permet de persister l'image en lorsque le jeu est persisté également
+    // lorsque Doctrine fera un INSERT du jeu, il fera aussi un INSERT de l'image
+    // Même chose pour le remove
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Image $mainImage = null;
+
     public function __construct()
     {
         $this->supports = new ArrayCollection();
@@ -163,6 +169,18 @@ class Game
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getMainImage(): ?Image
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?Image $mainImage): static
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }
