@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -53,6 +54,10 @@ class GameType extends AbstractType
 
             // Formlaire imbriqué
             ->add('mainImage', ImageType::class)
+
+            ->add('deleteMainImage', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
 
         // Ajoute le champ seulement si l'utilisateur est admin

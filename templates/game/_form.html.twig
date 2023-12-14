@@ -1,0 +1,42 @@
+<div class="container">
+
+{{ form_start(gameForm) }} {# Ajoute la balise form #}
+    <div class="card my-3">
+        <div class="card-body">
+            
+            <div class="row">
+                <div class="col-8">
+                    {{ form_row(gameForm.name) }}
+                    {{ form_row(gameForm.releaseDate) }}
+                    {{ form_row(gameForm.description) }}
+                </div>
+                <div class="col-4">
+                    {% if gameForm.published is defined %}
+                    {{ form_row(gameForm.published) }}
+                    {% endif %}
+
+                    {{ form_row(gameForm.category) }}
+                    {{ form_row(gameForm.supports) }}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                {% if entity.mainImage is not empty %}
+                <img src="{{ entity.mainImage }}" alt="" width="200">
+                {% endif %}
+
+                <div class="flex-grow-1 ms-2">
+                    {{ form_row(gameForm.mainImage.file) }}
+                    {{ form_row(gameForm.deleteMainImage) }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </div>
+    </div>
+{{ form_end(gameForm) }} {# Ferme la balise form #}
+
+</div>

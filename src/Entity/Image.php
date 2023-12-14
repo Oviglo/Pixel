@@ -25,6 +25,8 @@ class Image
     #[Assert\Image(maxSize: '3M')]
     private ?UploadedFile $file = null;
 
+    private ?string $oldPath = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +65,9 @@ class Image
     {
         $this->file = $file;
 
+        $this->oldPath = $this->path; // Copie le chemin de l'ancien fichier pour le supprimer plus tard
+        $this->path = ""; // Modifier path pour forcer l'update de la db ET l'upload
+
         return $this;
     }
 
@@ -70,6 +75,7 @@ class Image
      * Génération d'un nom de fichier pour éviter les doublons
      */
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function generatePath(): self 
     {
         // Si un fichier a bien été envoyé
@@ -91,8 +97,15 @@ class Image
     }
 
     #[ORM\PostPersist]
+    #[ORM\PostUpdate]
     public function upload(): void
     {
+        // Supprime l'ancien fichier
+        $old = self::getPublicRootDir().$this->oldPath;
+        if (is_file($old)) {
+            unlink($old);
+        }
+
         if ($this->file instanceof UploadedFile) {
             // Déplace le fichier uploadé vers le bon dossier et le renome (path)
             $this->file->move(self::getPublicRootDir(), $this->path);
@@ -107,5 +120,15 @@ class Image
     public function __toString(): string 
     {
         return $this->getWebPath();
+    }
+
+    // Supprime le fichier avant de supprimer dans la db
+    #[ORM\PreRemove]
+    public function removeFile(): void
+    {
+        $path = self::getPublicRootDir().$this->path;
+        if (is_file($path)) {
+            unlink($path);
+        }
     }
 }

@@ -20,7 +20,11 @@
         <tbody>
         {% for support in supports %}
             <tr>
-                <td>{{ support.id }}</td>
+                <td>
+                    {% if support.mainImage is not empty %}
+                    <img src="{{ support.mainImage }}" alt="" width="120">
+                    {% endif %}  
+                </td>
                 <td>{{ support.name }}</td>
                 <td>{{ support.published ? 'Yes' : 'No' }}</td>
                 <td>{{ support.constructor }}</td>
