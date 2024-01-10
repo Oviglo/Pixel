@@ -59,6 +59,16 @@
         </nav>
 
         <div class="container-fluid">
+        {# Affichage des messages flash #}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="alert my-2 alert-{{ type }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
         </div>
         

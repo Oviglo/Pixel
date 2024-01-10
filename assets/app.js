@@ -1,6 +1,7 @@
 // Import du fichier SCSS
 require('./scss/main.scss')
 
+import 'bootstrap'
 
 import tinymce from 'tinymce'
 require ('tinymce/themes/silver/index')

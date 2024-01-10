@@ -1,0 +1,7 @@
+"Release date": Release date
+
+game:
+  name: Game's name
+  name_help: Game's title
+  add: Add game card
+  edit: Edit game "%name%" card

@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GameController extends AbstractController
 {
@@ -100,7 +101,12 @@ class GameController extends AbstractController
     // {id} est un paramètre qui est un nombre de 1 ou plusieurs chiffres
     // Grâce au Param Converter, Symfony va faire automatiquement une requête pour récupérer le jeu en fonction de l'id
     #[Route('/game/{id<\d+>}/edit')]
-    public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
+    public function edit(
+        Game $entity,
+        Request $request,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator
+    ): Response
     {
         $this->denyAccessUnlessGranted(GameVoter::EDIT, $entity);
 
@@ -109,6 +115,8 @@ class GameController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
+            $this->addFlash('success', $translator->trans('game.edit_success'));
 
             return $this->redirectToRoute('app_game_index');
         }
