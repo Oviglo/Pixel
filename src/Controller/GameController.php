@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GameController extends AbstractController
 {
@@ -89,6 +90,8 @@ class GameController extends AbstractController
                 GameEvents::GAME_ADDED // Nom de l'événement
             );
 
+            $this->addFlash('success', 'La fiche du jeu a bien été ajoutée');
+
             return $this->redirectToRoute('app_game_index'); // redirection vers la liste des jeux
         }
 
@@ -102,7 +105,7 @@ class GameController extends AbstractController
     // Grâce au Param Converter, Symfony va faire automatiquement une requête pour récupérer le jeu en fonction de l'id
     #[Route('/game/{id<\d+>}/edit')]
     #[IsGranted('ROLE_USER')]
-    public function edit(Game $entity, Request $request, EntityManagerInterface $em): Response
+    public function edit(Game $entity, Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted(GameVoter::EDIT, $entity);
         
@@ -111,6 +114,8 @@ class GameController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
+            $this->addFlash('success', $translator->trans('game.edit_success'));
 
             return $this->redirectToRoute('app_game_index');
         }

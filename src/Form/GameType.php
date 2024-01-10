@@ -25,8 +25,8 @@ class GameType extends AbstractType
     {
         $builder 
             ->add('name', options: [
-                'label' => 'Nom du jeu',
-                'help' => 'Quel est le titre du jeu ?',
+                'label' => 'game.name',
+                'help' => 'game.name_help',
             ])
             ->add('description', WysiwygType::class, options: [
                 'attr' => [

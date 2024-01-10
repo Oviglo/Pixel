@@ -1,0 +1,9 @@
+'Release date': 'Date de sortie'
+
+game:
+  name: Nom du jeu
+  name_help: Quel est le titre ?
+  description: Description du jeu
+  add: Ajouter un jeu
+  edit: Modifier le jeu %name%
+  edit_success: Le jeu a bien été modifié
