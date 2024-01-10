@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Game;
 use App\Entity\Support;
+use App\Form\Type\WysiwygType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -27,10 +28,11 @@ class GameType extends AbstractType
                 'label' => 'Nom du jeu',
                 'help' => 'Quel est le titre du jeu ?',
             ])
-            ->add('description', options: [
+            ->add('description', WysiwygType::class, options: [
                 'attr' => [
                     'rows' => 10
-                ]
+                ],
+                'required' => false,
             ])
             ->add('releaseDate', options: [
                 'years' => range(1972, date('Y') + 2), // de 1972 à la date courante + 2 ans

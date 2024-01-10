@@ -3,6 +3,10 @@ $primary : #2a8ca5;
 // npm install bootstrap
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
+@import '../../node_modules/tinymce/skins/ui/oxide/skin.min.css';
+@import '../../node_modules/tinymce/skins/content/default/content.css';
+@import '../../node_modules/tinymce/skins/ui/oxide/content.min.css';
+
 body {
 
 }
