@@ -17,11 +17,7 @@ class SupportType extends AbstractType
             ->add('constructor')
             ->add('releaseDate')
             ->add('description')
-<<<<<<< HEAD
-=======
-
             ->add('mainImage', ImageType::class)
->>>>>>> TP3
         ;
     }
 

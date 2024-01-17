@@ -29,19 +29,11 @@ class GameVoter extends Voter
         }
 
         if ($attribute === self::VIEW) {
-<<<<<<< HEAD
-            return $subject->isPublished() || $user === $subject->getAuthor(); // On peut voir le jeu seulement s'il est publié
-        }
-
-        if ($attribute === self::EDIT) {
-            return $user === $subject->getAuthor();
-=======
             return $subject->isPublished() || $subject->getAuthor() === $user; // On peut voir la fiche du jeu
         }
 
         if ($attribute === self::EDIT) {
             return $subject->getAuthor() === $user;
->>>>>>> TP3
         }
 
         return false;

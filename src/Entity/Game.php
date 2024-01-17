@@ -2,22 +2,14 @@
 
 namespace App\Entity;
 
-<<<<<<< HEAD
-use App\Repository\GameRepository;
-=======
->>>>>>> TP3
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 // Indique à Doctrine que cette classe correspond à une table
-<<<<<<< HEAD
-#[ORM\Entity(repositoryClass:GameRepository::class)]
-=======
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks] // Indique que cette entité possède des fonctions à appeler lors d'événement Doctrine
->>>>>>> TP3
 class Game
 {
     #[ORM\Id] // Clé primaire
@@ -35,11 +27,7 @@ class Game
     private \DateTime|null $releaseDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
-<<<<<<< HEAD
-    #[ORM\JoinColumn(onDelete: 'SET NULL')] // Met a null si la catégorie est supprimée
-=======
     #[ORM\JoinColumn(onDelete: 'SET NULL')] // Mettre la valeur à null si la catégorie est supprimée
->>>>>>> TP3
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Support::class, inversedBy: 'games')]
@@ -52,8 +40,6 @@ class Game
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?User $author = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
@@ -67,21 +53,17 @@ class Game
 
     private bool $deleteMainImage = false;
 
->>>>>>> TP3
     public function __construct()
     {
         $this->supports = new ArrayCollection();
     }
 
-<<<<<<< HEAD
-=======
     #[ORM\PreUpdate]
     public function preUpdate(): void 
     {
         $this->updatedAt = new \DateTime;
     }
 
->>>>>>> TP3
     public function getId(): int|null
     {
         return $this->id;
@@ -159,15 +141,9 @@ class Game
         return $this;
     }
 
-<<<<<<< HEAD
-    public function isPublished(): bool
-    {
-        return $this->published ?? false; // null !== $this->published ? $this->published : false
-=======
     public function isPublished(): ?bool
     {
         return $this->published;
->>>>>>> TP3
     }
 
     public function setPublished(?bool $published): static
@@ -188,8 +164,6 @@ class Game
 
         return $this;
     }
-<<<<<<< HEAD
-=======
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
@@ -230,5 +204,4 @@ class Game
 
         return $this;
     }
->>>>>>> TP3
 }

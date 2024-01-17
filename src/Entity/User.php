@@ -34,16 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Game::class)]
     private Collection $games;
 
-<<<<<<< HEAD
-    public function __construct()
-    {
-        $this->games = new ArrayCollection();
-    }
-
-    public function __toString(): string 
-    {
-        return $this->username;
-=======
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Login::class)]
     private Collection $logins;
 
@@ -51,7 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->games = new ArrayCollection();
         $this->logins = new ArrayCollection();
->>>>>>> TP3
     }
 
     public function getId(): ?int
@@ -158,8 +147,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * @return Collection<int, Login>
@@ -190,5 +177,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
->>>>>>> TP3
 }

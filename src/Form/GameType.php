@@ -5,10 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Game;
 use App\Entity\Support;
-<<<<<<< HEAD
-=======
 use App\Form\Type\WysiwygType;
->>>>>>> TP3
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,17 +17,10 @@ use Symfony\Component\Security\Core\Security;
 
 class GameType extends AbstractType
 {
-<<<<<<< HEAD
-    public function __construct(private Security $security) {
-
-    }
-
-=======
     public function __construct(private Security $security)
     {
         
     }
->>>>>>> TP3
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder 
@@ -47,17 +37,6 @@ class GameType extends AbstractType
             ->add('releaseDate', options: [
                 'years' => range(1972, date('Y') + 2), // de 1972 à la date courante + 2 ans
             ])
-<<<<<<< HEAD
-            ->add('category', EntityType::class, options: [
-                'class' => Category::class,
-            ])
-
-            ->add('supports', EntityType::class, options: [
-                'class' => Support::class,
-                'multiple' => true,
-                'expanded' => true, /// Affiche avec des checkbox
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
-=======
 
             ->add('category', EntityType::class, options: [
                 'class' => Category::class,
@@ -70,15 +49,12 @@ class GameType extends AbstractType
                 'expanded' => true, // Affiche sous forme de checkbox
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     // Modifie la requête pour afficher la liste des supports dans le formulaire
->>>>>>> TP3
                     return $er->createQueryBuilder('s')
                         ->where('s.published = true')
                         ->orderBy('s.name', 'ASC')
                     ;
                 }
             ])
-<<<<<<< HEAD
-=======
 
             // Formulaire imbriqué
             ->add('mainImage', ImageType::class)
@@ -86,7 +62,6 @@ class GameType extends AbstractType
             ->add('deleteMainImage', CheckboxType::class, [
                 'required' => false,
             ])
->>>>>>> TP3
         ;
 
         if ($this->security->isGranted('ROLE_ADMIN')) {

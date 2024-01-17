@@ -11,31 +11,18 @@
 
     <div class="card-body">
         <form action="" method="get" class="d-flex">
-<<<<<<< HEAD
-            <select name="published" class="form-control mx-1">
-=======
             <select name="published" id="" class="form-control mx-1">
->>>>>>> TP3
                 <option value="ALL">Tous</option>
                 <option value="1" {% if app.request.get('published') == '1' %}selected{% endif %}>Publiés</option>
                 <option value="0" {% if app.request.get('published') == '0' %}selected{% endif %}>Non publiés</option>
             </select>
 
-<<<<<<< HEAD
-            <input type="search" name="search" class="form-control mx-1" placeholder="Rechercher..." value="{{ app.request.get('search') }}">
-
-            <select name="category" class="form-control mx-1">
-                <option value="ALL">Toutes les catégories</option>
-                {% for cat in categories %}
-                <option value="{{ cat.id }}" {% if app.request.get('category') == cat.id %}selected{% endif %}>{{ cat.name }}</option>
-=======
             <input type="search" name="search" id="" class="form-control mx-1" placeholder="Rechercher..." value="{{ app.request.get('search') }}">
 
             <select name="category" id="" class="form-control mx-1">
                 <option value="ALL">Toutes les catégories</option>
                 {% for category in categories %}
                 <option value="{{ category.id }}" {% if category.id == app.request.get('category') %}selected{% endif %}>{{ category.name }}</option>
->>>>>>> TP3
                 {% endfor %}
             </select>
 
@@ -50,61 +37,32 @@
                 <th>Nom</th>
                 <th>Date</th>
                 <th>Catégorie</th>
-<<<<<<< HEAD
-                <th>Consoles</th>
-                <th>Auteur</th>
-                <th>Actions</th>
-=======
                 <th>Supports</th>
                 <th>Auteur</th>
                 {% if is_granted('ROLE_USER') %}<th>Actions</th>{% endif %}
->>>>>>> TP3
             </tr>
         </thead>
         <tbody>
             {% for entity in entities %}
             <tr class="{% if not entity.published %}table-danger{% endif %}">
                 <td>
-<<<<<<< HEAD
-=======
                     {% if entity.mainImage is not empty %}
                     <img src="{{ entity.mainImage }}" width="120"/>
                     {% endif %}
->>>>>>> TP3
                     <a href="{{ path('app_game_show', {'id': entity.id}) }}">
                         {{ entity.name }}
                     </a>
                 </td>
-<<<<<<< HEAD
-                <td>{% if entity.releaseDate is not empty %}
-                    {{ entity.releaseDate|date('d/m/Y') }}
-                    {% else %}
-                    -
-                    {% endif %}
-=======
                 <td>
                 {% if entity.releaseDate is not empty %}
                 {{ entity.releaseDate|date('d/m/Y') }}
                 {% else %}
                 -
                 {% endif %}
->>>>>>> TP3
                 </td>
                 <td>{{ entity.category }}</td>
                 <td>
                     {% for support in entity.supports %}
-<<<<<<< HEAD
-                    <span class="badge bg-info me-1">{{ support }}</span>
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ entity.author }}
-                </td>
-                <td>
-                    <a class="btn btn-light" href="{{ path('app_game_edit', {'id': entity.id}) }}">Modifier</a>
-                    <a class="btn btn-danger me-1" href="{{ path('app_game_delete', {'id': entity.id}) }}">Supprimer</a>
-                </td>
-=======
                         <span class="badge bg-info mx-1">{{ support }}</span>
                     {% endfor %}
                 </td>
@@ -119,18 +77,13 @@
                     <a href="{{ path('app_game_delete', {'id': entity.id}) }}" class="btn btn-danger me-1">Supprimer</a>
                 </td>
                 {% endif %}
->>>>>>> TP3
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <div class="card-footer">
-<<<<<<< HEAD
-        {% include 'decorator/_pagination.html.twig' with {'route': 'app_game_index'} %}
-=======
         {% include "decorator/_pagination.html.twig" with {'route' : 'app_game_index'} %}
->>>>>>> TP3
     </div>
 </div>
 {% endblock %}
