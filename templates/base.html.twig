@@ -13,7 +13,7 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body data-bs-theme="dark">
+    <body data-bs-theme="light">
         <nav class="navbar navbar-expand bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Pixel</a>
@@ -36,6 +36,7 @@
                         </li>
                     </ul>
 
+<<<<<<< HEAD
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         {% if is_granted('ROLE_USER') %}
                             <li class="nav-item">
@@ -50,12 +51,41 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
+=======
+                    {# ul.navbar-nav.ms-auto.mb-2.mb-lg-0 #}
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {% if is_granted('ROLE_USER') %} {# Test si l'utilisateur a le rôle USER #}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">{{ app.user.username }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('app_logout') }}" class="nav-link">Se déconnecter</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_login') }}" class="nav-link">Se connecter</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('app_register') }}" class="nav-link">S'inscrire</a>
+>>>>>>> TP3
                             </li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
+
+        {# Affiche les messages flash #}
+        <div class="flash-messages">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="alert alert-{{ type }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+
         {% block body %}{% endblock %}
     </body>
 </html>

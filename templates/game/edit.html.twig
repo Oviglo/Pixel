@@ -1,6 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<<<<<<< HEAD
 <div>
 
 {{ form_start(gameForm) }} {# Ajoute la balise form #}
@@ -12,4 +13,8 @@
 {{ form_end(gameForm) }} {# Ferme la balise form #}
 
 </div>
+=======
+<h1>{{ 'game.edit'|trans({'%name%': entity.name}) }}</h1>
+{% include "game/_form.html.twig" %}
+>>>>>>> TP3
 {% endblock %}

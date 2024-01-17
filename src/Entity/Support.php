@@ -22,7 +22,11 @@ class Support
     #[ORM\Column]
     private ?bool $published = null;
 
+<<<<<<< HEAD
     #[ORM\Column(length: 80, nullable: true)]
+=======
+    #[ORM\Column(length: 80)]
+>>>>>>> TP3
     private ?string $constructor = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -34,6 +38,12 @@ class Support
     #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'supports')]
     private Collection $games;
 
+<<<<<<< HEAD
+=======
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Image $mainImage = null;
+
+>>>>>>> TP3
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -78,7 +88,11 @@ class Support
         return $this->constructor;
     }
 
+<<<<<<< HEAD
     public function setConstructor(?string $constructor): static
+=======
+    public function setConstructor(string $constructor): static
+>>>>>>> TP3
     {
         $this->constructor = $constructor;
 
@@ -135,4 +149,19 @@ class Support
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    public function getMainImage(): ?Image
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?Image $mainImage): static
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+>>>>>>> TP3
 }

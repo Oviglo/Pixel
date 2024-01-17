@@ -34,6 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Game::class)]
     private Collection $games;
 
+<<<<<<< HEAD
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -42,6 +43,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string 
     {
         return $this->username;
+=======
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Login::class)]
+    private Collection $logins;
+
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+        $this->logins = new ArrayCollection();
+>>>>>>> TP3
     }
 
     public function getId(): ?int
@@ -148,4 +158,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * @return Collection<int, Login>
+     */
+    public function getLogins(): Collection
+    {
+        return $this->logins;
+    }
+
+    public function addLogin(Login $login): static
+    {
+        if (!$this->logins->contains($login)) {
+            $this->logins->add($login);
+            $login->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLogin(Login $login): static
+    {
+        if ($this->logins->removeElement($login)) {
+            // set the owning side to null (unless already changed)
+            if ($login->getUser() === $this) {
+                $login->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+>>>>>>> TP3
 }
