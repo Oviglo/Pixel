@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: SupportRepository::class)]
 class Support
@@ -31,6 +32,7 @@ class Support
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Ignore]
     #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'supports')]
     private Collection $games;
 
