@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
@@ -23,17 +24,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     #[ORM\Column]
+    #[Ignore]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    #[Ignore]
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Game::class)]
     private Collection $games;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Login::class)]
     private Collection $logins;
 
@@ -82,6 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    public function getRole(): array
+    {
+        return $this->getRoles();
+    }
+
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -89,6 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    #[Ignore]
     public function hasRole(string $role): bool 
     {
         return in_array($role, $this->getRoles());
