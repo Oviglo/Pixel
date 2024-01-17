@@ -15,7 +15,7 @@ class GameRepository extends ServiceEntityRepository
     }
 
     public function findFiltered(
-        string $published, 
+        string $published = 'ALL', 
         string $search = '', 
         string $category = 'ALL',
         int $itemCount = 10,
